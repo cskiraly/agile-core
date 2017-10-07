@@ -16,16 +16,6 @@ CURRDIR=`pwd`
 DEPS=${1:-$CURRDIR/deps}
 BUILD=$DEPS/build
 
-#clean up first
-if [ -e "$DEPS/agile-interfaces" ] ; then
-  rm -r $DEPS/agile-interfaces
-  rm $DEPS/agile-interfaces*
-  # drop from local repo eventually
-  if [ -e ~/.m2/repository/iot/agile/agile-interfaces ] ; then
-    rm -r  ~/.m2/repository/iot/agile/agile-interfaces
-  fi
-fi
-
 if [ ! -e "$BUILD" ] ; then
   mkdir -p $BUILD
 fi
@@ -35,14 +25,13 @@ if [ ! -e "$BUILD/agile-api-spec" ] ; then
   git clone https://github.com/Agile-IoT/agile-api-spec.git
 else
   cd $BUILD/agile-api-spec
-#  git pull
   cd ..
 fi
 
 cd agile-api-spec/agile-dbus-java-interface
 chmod +x ./scripts/install-dependencies.sh
-./scripts/install-dependencies.sh
-mvn package
+bash -x ./scripts/install-dependencies.sh
+mvn clean package
 cp target/agile-interfaces-1.0.jar $DEPS
 cd ..
 

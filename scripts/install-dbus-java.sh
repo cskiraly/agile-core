@@ -22,35 +22,38 @@ DBUSJAVA=2.9 #note: this is not an official release, that stopped at 2.7
 LMLIB=0.8
 
 
-wget http://www.matthew.ath.cx/projects/java/libmatthew-java-$LMLIB.tar.gz
-tar -xzf libmatthew-java-$LMLIB.tar.gz
-rm libmatthew-java-$LMLIB.tar.gz
+#wget http://www.matthew.ath.cx/projects/java/libmatthew-java-$LMLIB.tar.gz
+#tar -xzf libmatthew-java-$LMLIB.tar.gz
+#rm libmatthew-java-$LMLIB.tar.gz
 
 #wget https://dbus.freedesktop.org/releases/dbus-java/dbus-java-$DBUSJAVA.tar.gz
 #tar -xzf dbus-java-$DBUSJAVA.tar.gz
 #rm dbus-java-$DBUSJAVA.tar.gz
-git clone https://github.com/jeanparpaillon/dbus-java.git dbus-java-$DBUSJAVA
-( cd dbus-java-$DBUSJAVA && git checkout $DBUSJAVA )
+#git clone https://github.com/jeanparpaillon/dbus-java.git dbus-java-$DBUSJAVA
+#( cd dbus-java-$DBUSJAVA && git checkout $DBUSJAVA )
 
-mv dbus-java-$DBUSJAVA $BUILD
-mv libmatthew-java-$LMLIB $BUILD
+#mv dbus-java-$DBUSJAVA $BUILD
+#mv libmatthew-java-$LMLIB $BUILD
 
 cd $BUILD/libmatthew-java-$LMLIB
 
-make >> /dev/null
-PREFIX=$BUILD make install >> /dev/null
+#make
+PREFIX=$BUILD make install
 
 cp ./*.jar $DEPS
 cp ./*.so $DEPS
 cp ./libunix-java.so $DEPS/unix-java.so
 
+cd -
+
 cd $BUILD/dbus-java-$DBUSJAVA
-
-PREFIX=$BUILD JAVAUNIXLIBDIR=$BUILD/lib/jni JAVAUNIXJARDIR=$BUILD/share/java make bin >> /dev/null
-
+make clean
+PREFIX=$BUILD JAVAUNIXLIBDIR=$BUILD/lib/jni JAVAUNIXJARDIR=$BUILD/share/java make DEBUG=enable STRIP=touch bin
 cp ./*.jar $DEPS
 
-rm -rf $BUILD
+#rm -rf $BUILD
+
+cd -
 
 cd $DEPS
 

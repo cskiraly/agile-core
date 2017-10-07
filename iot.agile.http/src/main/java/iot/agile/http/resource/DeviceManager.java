@@ -27,6 +27,7 @@ package iot.agile.http.resource;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.ArrayList;
 
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletResponse;
@@ -88,7 +89,13 @@ public class DeviceManager {
 	@POST
 	@Path("/typeof")
 	public List<String> MatchingDeviceTypes(DeviceOverview overview) throws DBusException, IOException {
-		return client.getDeviceManager().MatchingDeviceTypes(overview);
+		List<String> ret = new ArrayList<String>();
+		try {
+			ret = client.getDeviceManager().MatchingDeviceTypes(overview);
+		} catch (org.freedesktop.dbus.exceptions.DBusExecutionException e) {
+			logger.warn("GOT IT. Now what? " + e + overview);
+		}
+		return ret;
 	}
 
 	public static class RegisterPayload {

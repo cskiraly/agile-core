@@ -92,7 +92,8 @@ fi
 
 if [ $MODULE = 'all' ] || [ $MODULE = 'http' ]; then
   ./scripts/stop.sh "http"
-  java -jar -Djava.library.path=deps iot.agile.http/target/http-1.0-jar-with-dependencies.jar &
+#  java -jar -Djava.library.path=deps iot.agile.http/target/http-1.0-jar-with-dependencies.jar &
+  java -jar iot.agile.http/target/http-1.0-jar-with-dependencies.jar &
   echo "Started AGILE HTTP API"
 fi
 
